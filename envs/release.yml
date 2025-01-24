@@ -1,4 +1,4 @@
-name: biocpy_devel
+name: biocpy_release
 channels:
   - conda-forge
 dependencies:

@@ -1,0 +1,35 @@
+name: Create the environment
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        conda-config: [release]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: mamba-org/setup-micromamba@v2
+        with:
+          environment-file: envs/${{ matrix.conda-config }}.yml
+          init-shell: >-
+            bash
+          cache-environment: true
+          cache-downloads: true
+          post-cleanup: "all"
+
+      - name: Test for import
+        run: python -c "import genomicranges"
+        shell: bash -el {0}
+
+      - name: Snapshot the package versions in the environment
+        run: pip list
+        shell: micromamba-shell {0}

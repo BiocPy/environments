@@ -1,7 +1,7 @@
-FROM condaforge/miniforge3:latest
+FROM mambaorg/micromamba:2.0.5
 
-WORKDIR /biocenv
-COPY . /biocenv
-RUN mamba --version
+COPY --chown=$MAMBA_USER:$MAMBA_USER envs/release.yml /tmp/env.yaml
+RUN micromamba --version
 
-RUN mamba env create -f env/release.yml
+RUN micromamba install -y -n base -f /tmp/env.yaml && \
+    micromamba clean --all --yes
