@@ -26,15 +26,6 @@ jobs:
           cache-downloads: true
           post-cleanup: "all"
 
-      - name: Check environment and Python version
-        run: |
-          python --version
-          micromamba --version
-          micromamba activate biocpy_${{ matrix.conda-config }}
-          python --version
-          printenv
-        shell: micromamba-shell {0}
-
       - name: Test for import
         run: python -c "import genomicranges"
         shell: bash -el {0}
