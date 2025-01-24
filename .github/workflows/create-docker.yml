@@ -1,0 +1,27 @@
+name: Create Docker images
+
+on:
+  push:
+    tags: "*"
+
+jobs:
+  create_docker:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config: ["release"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Publish to Registry
+        uses: elgohr/Publish-Docker-Github-Action@v4
+        with:
+          name: ${{ github.repository }}/${{ matrix.config }}:${{ github.ref_name }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          dockerfile: ${{ matrix.config }}.dockerfile
+          registry: ghcr.io
+          snapshot: true
+          buildoptions: "--compress --force-rm"
