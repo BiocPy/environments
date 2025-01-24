@@ -33,6 +33,7 @@ jobs:
           micromamba activate biocpy_${{ matrix.conda-config }}
           python --version
           printenv
+        shell: micromamba-shell {0}
 
       - name: Test for import
         run: python -c "import genomicranges"
