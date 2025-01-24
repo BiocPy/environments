@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        config: ["release"]
+        conda-config: [release]
 
     steps:
       - name: Checkout
@@ -18,10 +18,9 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@v4
         with:
-          name: ${{ github.repository }}/${{ matrix.config }}:${{ github.ref_name }}
+          name: ${{ github.repository }}/${{ matrix.conda-config }}:${{ github.ref_name }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          dockerfile: ${{ matrix.config }}.dockerfile
+          dockerfile: ${{ matrix.conda-config }}.dockerfile
           registry: ghcr.io
           snapshot: true
-          buildoptions: "--compress --force-rm"

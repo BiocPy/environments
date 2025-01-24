@@ -2,16 +2,16 @@ name: Create the environment
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        config: ["release"]
+        conda-config: [release]
 
     steps:
       - name: Checkout
@@ -19,11 +19,20 @@ jobs:
 
       - uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: envs/{{ matrix.config }}.yml
+          environment-file: envs/{{ matrix.conda-config }}.yml
           init-shell: >-
             bash
           cache-environment: true
+          cache-downloads: true
           post-cleanup: "all"
+
+      - name: Check environment and Python version
+        run: |
+          python --version
+          micromamba --version
+          micromamba activate biocpy_{{ matrix.conda-config }}
+          python --version
+          printenv
 
       - name: Test for import
         run: python -c "import genomicranges"
