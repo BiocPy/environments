@@ -17,6 +17,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check environment and Python version
+        run: |
+          pwd
+          ls -la
+
       - uses: mamba-org/setup-micromamba@v2
         with:
           environment-file: envs/{{ matrix.conda-config }}.yml
