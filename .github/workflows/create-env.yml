@@ -17,14 +17,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Check environment and Python version
-        run: |
-          pwd
-          ls -la
-
       - uses: mamba-org/setup-micromamba@v2
         with:
-          environment-file: envs/{{ matrix.conda-config }}.yml
+          environment-file: envs/${{ matrix.conda-config }}.yml
           init-shell: >-
             bash
           cache-environment: true
@@ -35,7 +30,7 @@ jobs:
         run: |
           python --version
           micromamba --version
-          micromamba activate biocpy_{{ matrix.conda-config }}
+          micromamba activate biocpy_${{ matrix.conda-config }}
           python --version
           printenv
 
